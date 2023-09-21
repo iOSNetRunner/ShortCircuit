@@ -7,17 +7,33 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class GameViewController: UIViewController {
     
     @IBOutlet var backgroundView: UIView!
-    
     @IBOutlet var backgroundImage: UIImageView!
     @IBOutlet var backgroundImageMirrored: UIImageView!
+    @IBOutlet var buttonsBackground: UIView!
+    
+    override var prefersStatusBarHidden: Bool {
+        true
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setBackgroundFor(uiView: buttonsBackground)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         animateBackground()
+    }
+    
+    private func setBackgroundFor(uiView: UIView) {
+        uiView.backgroundColor = .black
+        uiView.layer.opacity = 0.3
+        uiView.layer.cornerRadius = 15
     }
     
     private func animateBackground() {
