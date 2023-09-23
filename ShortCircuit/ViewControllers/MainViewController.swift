@@ -11,8 +11,9 @@ final class MainViewController: UIViewController {
 
     
     @IBOutlet var arrowsImage: UIImageView!
-    @IBOutlet var titleLabel: UILabel!
     @IBOutlet var gearLogo: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    
     
     
     
