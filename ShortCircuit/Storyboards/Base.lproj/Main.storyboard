@@ -18,6 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" image="bolt.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tkP-KO-yst">
+                                <rect key="frame" x="195" y="343" width="40" height="41"/>
+                                <color key="tintColor" systemColor="systemGreenColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="TBX-j9-Mt5"/>
+                                    <constraint firstAttribute="height" constant="40" id="qMl-5O-JIZ"/>
+                                </constraints>
+                            </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Vje-Kn-zY2">
                                 <rect key="frame" x="116.66666666666669" y="457.33333333333326" width="197" height="204"/>
                                 <subviews>
@@ -95,14 +103,17 @@ CIRCUIT</string>
                         <constraints>
                             <constraint firstItem="Vje-Kn-zY2" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="Fe3-Cl-UTS"/>
                             <constraint firstItem="1Uv-vW-XWm" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="JC2-pM-UpN"/>
+                            <constraint firstItem="tkP-KO-yst" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="0.78" id="Pmp-8s-P5P"/>
                             <constraint firstItem="1Uv-vW-XWm" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1:2.2" id="ThO-CT-Bc6"/>
                             <constraint firstItem="Vje-Kn-zY2" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1.2:1" id="XTE-dY-OnS"/>
                             <constraint firstItem="qze-Im-VWv" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1.6:1" id="clW-qg-SbI"/>
                             <constraint firstItem="qze-Im-VWv" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" multiplier="1.8:1" id="kJt-Yv-qak"/>
+                            <constraint firstItem="tkP-KO-yst" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="uqG-WF-fgr"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="arrowsImage" destination="FBs-aQ-C3P" id="5i5-ma-5tn"/>
+                        <outlet property="boltLogo" destination="tkP-KO-yst" id="ksQ-tv-IFL"/>
                         <outlet property="gearLogo" destination="qze-Im-VWv" id="mA1-LL-zb7"/>
                         <outlet property="titleLabel" destination="k89-Qc-9rc" id="x7B-Su-ij7"/>
                     </connections>
@@ -262,10 +273,12 @@ CIRCUIT</string>
                         <outlet property="backgroundView" destination="8bC-Xf-vdC" id="StZ-Mt-mAk"/>
                         <outlet property="buttonsBackground" destination="2C8-Ss-RDk" id="rhc-S8-OzO"/>
                         <outlet property="gradientTintOverlay" destination="NTf-UW-1hF" id="uoR-A1-hLa"/>
+                        <outlet property="leftButton" destination="Npt-pJ-90r" id="llB-KT-wEW"/>
                         <outlet property="lifeIcon" destination="kRh-Jk-Ciq" id="Ufd-oz-yfk"/>
                         <outlet property="lifeLeftLabel" destination="7Tx-Qa-biB" id="AYG-4J-O3n"/>
                         <outlet property="playerView" destination="SZY-bx-db1" id="TQD-aR-n9c"/>
                         <outlet property="playerXposition" destination="Vt8-cg-Uka" id="dCn-qG-klt"/>
+                        <outlet property="rightButton" destination="VWS-ye-6HP" id="eLO-M7-lyO"/>
                         <outlet property="scoreBackground" destination="s6B-t3-w4a" id="ezi-sS-51b"/>
                         <outlet property="scoreLabel" destination="AAV-ss-CaD" id="jxr-Sk-3AG"/>
                     </connections>
