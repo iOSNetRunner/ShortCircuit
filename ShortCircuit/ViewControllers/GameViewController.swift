@@ -168,14 +168,14 @@ final class GameViewController: UIViewController {
     }
     
     private func animatePlayerDeath() {
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: 0.8,
                        delay: 0,
                        options: [.curveLinear],
                        animations: {
             self.playerView.transform = CGAffineTransform(scaleX: 25, y: 0.2)
         }, completion: { _ in
             
-            UIView.animate(withDuration: 0.5,
+            UIView.animate(withDuration: 0.8,
                            delay: 0,
                            options: [.curveLinear],
                            animations: {
@@ -191,7 +191,7 @@ final class GameViewController: UIViewController {
         guard let spawnCoordinates else { return }
         guard let randomX = spawnCoordinates.randomElement() else { return }
         
-        let frameSide: CGFloat = 60
+        let frameSide: CGFloat = 70
         
         let obstacle = UIImageView(frame: CGRect(x: randomX - frameSide / 2,
                                                   y: view.bounds.minY,
@@ -202,7 +202,7 @@ final class GameViewController: UIViewController {
         obstacle.layer.shadowOpacity = 1
         obstacle.layer.shadowColor = obstacle.tintColor.cgColor
         obstacle.layer.shadowRadius = 3
-        
+        obstacle.alpha = 0.1
         gradientTintOverlay.addSubview(obstacle)
         
         
@@ -210,8 +210,24 @@ final class GameViewController: UIViewController {
         let endAnimator = UIViewPropertyAnimator(duration: gameSpeed, curve: .linear)
         
         
+        UIView.animate(withDuration: 3,
+                       delay: 0,
+                       usingSpringWithDamping: 0.1,
+                       initialSpringVelocity: 5.2,
+                       options: [.repeat, .curveLinear],
+                       animations: {
+            
+            obstacle.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            
+            
+            obstacle.alpha = 1
+        })
+        
+        
         startAnimator.addAnimations {
+            
             obstacle.frame = obstacle.frame.offsetBy(dx: 0, dy: self.playerView.center.y)
+            
         }
         
         endAnimator.addAnimations {
