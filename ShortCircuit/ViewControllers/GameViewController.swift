@@ -168,11 +168,14 @@ final class GameViewController: UIViewController {
     }
     
     private func animatePlayerDeath() {
-        UIView.animate(withDuration: 0.8,
+        
+        UIView.animate(withDuration: 0.6,
                        delay: 0,
+                       
                        options: [.curveLinear],
                        animations: {
-            self.playerView.transform = CGAffineTransform(scaleX: 25, y: 0.2)
+            self.playerView.transform = CGAffineTransform(scaleX: 15, y: 0.2)
+            
         }, completion: { _ in
             
             UIView.animate(withDuration: 0.8,
@@ -251,8 +254,8 @@ final class GameViewController: UIViewController {
                     self.leftButton.isEnabled.toggle()
                     self.rightButton.isEnabled.toggle()
                     self.animatePlayerDeath()
-                    self.view.subviews.forEach({$0.layer.removeAllAnimations()})
-                    
+                    self.backgroundImage.layer.removeAllAnimations()
+                    self.backgroundImageMirrored.layer.removeAllAnimations()
                 }
                 self.lifeLeftCount()
                 self.updateLifeCounter()

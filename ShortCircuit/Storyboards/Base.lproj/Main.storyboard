@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -55,6 +56,9 @@
                                         <state key="normal" title="SETTINGS">
                                             <color key="titleColor" systemColor="systemGreenColor"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="DZ6-oR-YZr" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="pIn-7B-bk5"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -77,7 +81,7 @@
                                 <rect key="frame" x="27.666666666666657" y="80.333333333333314" width="375" height="263"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.10000000000000001" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="FBs-aQ-C3P">
-                                        <rect key="frame" x="0.0" y="1" width="375" height="373.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="1.0000000000000018" width="375" height="373.66666666666669"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="375" id="PRF-3L-dMp"/>
@@ -121,6 +125,227 @@ CIRCUIT</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o1Y-8c-Ga8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-770.23255813953483" y="-27.038626609442062"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="G5b-Je-qzm">
+            <objects>
+                <viewController id="DZ6-oR-YZr" customClass="SettingsViewController" customModule="ShortCircuit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lT4-3l-Bla">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Teh-2D-wLS">
+                                <rect key="frame" x="16" y="147.33333333333334" width="398" height="123.00000000000003"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="l2f-7X-wrm">
+                                        <rect key="frame" x="16" y="0.0" width="366" height="33"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeS-D3-6Mi">
+                                                <rect key="frame" x="0.0" y="0.0" width="80.666666666666671" height="33"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="johnny123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mIu-eT-hbt">
+                                                <rect key="frame" x="133" y="0.0" width="110" height="33"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STj-7p-uEB">
+                                                <rect key="frame" x="295" y="0.0" width="71" height="33"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="select">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Hqc-FZ-2mi" userLabel="Skin Stack View">
+                                        <rect key="frame" x="16" y="48" width="366" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skin:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ju9-w6-dVW">
+                                                <rect key="frame" x="0.0" y="0.0" width="51.666666666666664" height="30"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bolt.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7VQ-M1-nQk">
+                                                <rect key="frame" x="158.33333333333334" y="-0.33333333333333215" width="30" height="31"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="0Uf-wM-vsu"/>
+                                                    <constraint firstAttribute="width" constant="30" id="vrs-C1-0R1"/>
+                                                </constraints>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiV-8K-tK8">
+                                                <rect key="frame" x="295" y="0.0" width="71" height="30"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="select">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8q6-5x-gR6" userLabel="Avatar Stack View">
+                                        <rect key="frame" x="16" y="93" width="366" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avatar:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Hx-MI-ioW">
+                                                <rect key="frame" x="0.0" y="0.0" width="82" height="30"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qH1-1r-5xf">
+                                                <rect key="frame" x="173.66666666666666" y="0.0" width="30" height="30"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="I5T-0S-Au7"/>
+                                                    <constraint firstAttribute="height" constant="30" id="j6e-LO-Usy"/>
+                                                </constraints>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IyU-2a-2CD">
+                                                <rect key="frame" x="295" y="0.0" width="71" height="30"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="select">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="l2f-7X-wrm" secondAttribute="trailing" constant="16" id="Gc1-Dg-eRq"/>
+                                    <constraint firstAttribute="trailing" secondItem="8q6-5x-gR6" secondAttribute="trailing" constant="16" id="MRr-cl-Av4"/>
+                                    <constraint firstItem="Hqc-FZ-2mi" firstAttribute="leading" secondItem="Teh-2D-wLS" secondAttribute="leading" constant="16" id="ZtS-jp-ARh"/>
+                                    <constraint firstItem="8q6-5x-gR6" firstAttribute="leading" secondItem="Teh-2D-wLS" secondAttribute="leading" constant="16" id="fjI-Rq-Y2i"/>
+                                    <constraint firstItem="l2f-7X-wrm" firstAttribute="leading" secondItem="Teh-2D-wLS" secondAttribute="leading" constant="16" id="jOr-Iw-tOi"/>
+                                    <constraint firstAttribute="trailing" secondItem="Hqc-FZ-2mi" secondAttribute="trailing" constant="16" id="xpQ-E8-ROu"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAME SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3Q-vX-8yu">
+                                <rect key="frame" x="16" y="417.33333333333331" width="398" height="17.333333333333314"/>
+                                <fontDescription key="fontDescription" name="Copperplate" family="Copperplate" pointSize="17"/>
+                                <color key="textColor" systemColor="systemGreenColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PLAYER SETTINGS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4G6-Yx-0NE">
+                                <rect key="frame" x="16" y="100" width="398" height="17.333333333333329"/>
+                                <fontDescription key="fontDescription" name="Copperplate" family="Copperplate" pointSize="17"/>
+                                <color key="textColor" systemColor="systemGreenColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4iT-fx-GYS">
+                                <rect key="frame" x="16" y="454.66666666666669" width="398" height="76.000000000000057"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="LLf-Jr-AUU" userLabel="Mode Stack View">
+                                        <rect key="frame" x="16" y="0.0" width="366" height="33"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSf-F4-J07">
+                                                <rect key="frame" x="0.0" y="6.3333333333333126" width="59.666666666666664" height="20.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="extreme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7t-zU-RGA">
+                                                <rect key="frame" x="134" y="6.3333333333333126" width="86.666666666666686" height="20.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemYellowColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vZv-mk-hhu">
+                                                <rect key="frame" x="295" y="0.0" width="71" height="33"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="select">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="gameModeSelectTapped:" destination="DZ6-oR-YZr" eventType="touchUpInside" id="JeV-HU-NPO"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jOT-9B-U0h" userLabel="Obstacle Stack View">
+                                        <rect key="frame" x="16" y="43" width="366" height="33"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Obstacles:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yQl-hZ-ozk">
+                                                <rect key="frame" x="0.0" y="6.3333333333333126" width="115.33333333333333" height="20.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="textColor" systemColor="systemGreenColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bolt.batteryblock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tgi-wo-Xs9">
+                                                <rect key="frame" x="190.33333333333334" y="3.3333333333332913" width="30" height="27"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="2Dt-tA-lzJ"/>
+                                                    <constraint firstAttribute="height" constant="30" id="xdB-cm-my8"/>
+                                                </constraints>
+                                            </imageView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HS8-HS-Aey">
+                                                <rect key="frame" x="295" y="0.0" width="71" height="33"/>
+                                                <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="select">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="LLf-Jr-AUU" secondAttribute="trailing" constant="16" id="17C-JL-wQC"/>
+                                    <constraint firstItem="jOT-9B-U0h" firstAttribute="leading" secondItem="4iT-fx-GYS" secondAttribute="leading" constant="16" id="FDO-1H-XMd"/>
+                                    <constraint firstAttribute="trailing" secondItem="jOT-9B-U0h" secondAttribute="trailing" constant="16" id="fCq-fO-KLx"/>
+                                    <constraint firstItem="LLf-Jr-AUU" firstAttribute="leading" secondItem="4iT-fx-GYS" secondAttribute="leading" constant="16" id="qd5-YJ-dPO"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="2rl-yX-Tko"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4iT-fx-GYS" firstAttribute="leading" secondItem="2rl-yX-Tko" secondAttribute="leading" constant="16" id="0sd-yK-VG6"/>
+                            <constraint firstItem="4G6-Yx-0NE" firstAttribute="top" secondItem="2rl-yX-Tko" secondAttribute="top" constant="100" id="43e-nZ-5gC"/>
+                            <constraint firstItem="Teh-2D-wLS" firstAttribute="centerX" secondItem="lT4-3l-Bla" secondAttribute="centerX" id="7VQ-RS-7zn"/>
+                            <constraint firstItem="2rl-yX-Tko" firstAttribute="trailing" secondItem="4iT-fx-GYS" secondAttribute="trailing" constant="16" id="BKJ-Sd-LKv"/>
+                            <constraint firstItem="f3Q-vX-8yu" firstAttribute="centerY" secondItem="lT4-3l-Bla" secondAttribute="centerY" constant="-40" id="BrZ-1T-6Qx"/>
+                            <constraint firstItem="Teh-2D-wLS" firstAttribute="top" secondItem="4G6-Yx-0NE" secondAttribute="bottom" constant="30" id="DhJ-po-gc5"/>
+                            <constraint firstItem="2rl-yX-Tko" firstAttribute="trailing" secondItem="4G6-Yx-0NE" secondAttribute="trailing" constant="16" id="EDr-AR-DsL"/>
+                            <constraint firstItem="f3Q-vX-8yu" firstAttribute="leading" secondItem="2rl-yX-Tko" secondAttribute="leading" constant="16" id="HBa-6t-qGf"/>
+                            <constraint firstItem="2rl-yX-Tko" firstAttribute="trailing" secondItem="f3Q-vX-8yu" secondAttribute="trailing" constant="16" id="NRe-Ew-mjU"/>
+                            <constraint firstItem="4iT-fx-GYS" firstAttribute="top" secondItem="f3Q-vX-8yu" secondAttribute="bottom" constant="20" id="Sg7-WJ-Mmy"/>
+                            <constraint firstItem="Teh-2D-wLS" firstAttribute="leading" secondItem="2rl-yX-Tko" secondAttribute="leading" constant="16" id="TeW-W0-8KU"/>
+                            <constraint firstItem="4G6-Yx-0NE" firstAttribute="leading" secondItem="2rl-yX-Tko" secondAttribute="leading" constant="16" id="eb6-3R-8HT"/>
+                            <constraint firstItem="2rl-yX-Tko" firstAttribute="trailing" secondItem="Teh-2D-wLS" secondAttribute="trailing" constant="16" id="lQa-It-YMy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avatarSelectButton" destination="IyU-2a-2CD" id="KkY-hg-Mqs"/>
+                        <outlet property="gameSettingsLabel" destination="f3Q-vX-8yu" id="GJv-Km-qvx"/>
+                        <outlet property="modeSelectButton" destination="vZv-mk-hhu" id="dKg-5x-KVU"/>
+                        <outlet property="obstacleSelectButton" destination="HS8-HS-Aey" id="5Ua-BB-NbM"/>
+                        <outlet property="playerAvatar" destination="qH1-1r-5xf" id="jhE-XD-6QZ"/>
+                        <outlet property="playerNameLabel" destination="mIu-eT-hbt" id="e78-89-oWg"/>
+                        <outlet property="playerSelectButton" destination="STj-7p-uEB" id="uPL-V7-ycV"/>
+                        <outlet property="playerSettingsLabel" destination="4G6-Yx-0NE" id="0KW-JX-ZbS"/>
+                        <outlet property="playerSkinImage" destination="7VQ-M1-nQk" id="Pwz-ff-Jt9"/>
+                        <outlet property="selectedModeLabel" destination="L7t-zU-RGA" id="gXK-3N-aaE"/>
+                        <outlet property="selectedObstacleSkin" destination="tgi-wo-Xs9" id="0b8-11-1Qp"/>
+                        <outlet property="skinSelectButton" destination="MiV-8K-tK8" id="oj1-wS-3ah"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y2j-AB-b8L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="111.62790697674419" y="431.97424892703867"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -285,13 +510,14 @@ CIRCUIT</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="76.744186046511629" y="-27.038626609442062"/>
+            <point key="canvasLocation" x="113" y="-281"/>
         </scene>
     </scenes>
     <resources>
         <image name="BackgroundMain" width="664" height="1439"/>
         <image name="BackgroundMain2" width="664" height="1439"/>
         <image name="arrow.triangle.2.circlepath" catalog="system" width="128" height="104"/>
+        <image name="bolt.batteryblock.fill" catalog="system" width="128" height="93"/>
         <image name="bolt.fill" catalog="system" width="100" height="128"/>
         <image name="bolt.heart.fill" catalog="system" width="128" height="107"/>
         <image name="gear" catalog="system" width="128" height="122"/>
