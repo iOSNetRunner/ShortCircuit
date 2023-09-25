@@ -17,8 +17,10 @@ final class MainViewController: UIViewController {
     
     private var spawnTimer: Timer?
     
+    var currentPlayer: User!
     
     
+    @IBOutlet var startButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -27,6 +29,12 @@ final class MainViewController: UIViewController {
         view.setGradientBackground()
         
         
+        if currentPlayer != nil {
+            startButton.isEnabled = true
+        } else {
+            startButton.isEnabled = false
+            startButton.setTitleColor(.gray, for: .disabled)
+        }
         
         
         

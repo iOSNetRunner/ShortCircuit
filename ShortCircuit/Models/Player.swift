@@ -7,15 +7,17 @@
 
 import Foundation
 
-struct Player: Codable {
-    let name: String
-    let picture: Data
-    let settings: Settings
-}
-
-
-struct Settings: Codable {
-    let speed: Int
-    let skin: String
-    let obstacleSkin: String
-}
+//struct Player: Codable {
+//    let name: String
+//    //let picture: Data
+//    //let settings: Settings
+//
+//
+//}
+//
+//
+//struct Settings: Codable {
+//    let speed: Int
+//    let skin: String
+//    let obstacleSkin: String
+//}
