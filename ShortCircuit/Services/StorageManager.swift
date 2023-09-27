@@ -35,9 +35,6 @@ final class StorageManager {
         let user = User(context: viewContext)
         user.name = playerName
         completion(user)
-    
-        
-        
         
         saveContext()
     }
@@ -55,6 +52,32 @@ final class StorageManager {
         } catch {
             completion(.failure(error))
         }
+    }
+    
+    func update(_ user: User, newSkin: String) {
+        user.skin = newSkin
+        print("Saved \(newSkin) to \(user)")
+        saveContext()
+    }
+    
+    func update(_ user: User, newMode: Int) {
+        user.speed = Int64(newMode)
+        saveContext()
+    }
+    
+    func update(_ user: User, newPic: String) {
+        user.avatar = newPic
+        saveContext()
+    }
+    
+    func update(_ user: User, newObstacle: String) {
+        user.obstacle = newObstacle
+        saveContext()
+    }
+    
+    func update(_ user: User, newScore: Int) {
+        user.score = Int64(newScore)
+        saveContext()
     }
     
     

@@ -178,8 +178,8 @@ CIRCUIT</string>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="johnny123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mIu-eT-hbt">
-                                                <rect key="frame" x="133" y="0.0" width="110" height="33"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="unselected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mIu-eT-hbt">
+                                                <rect key="frame" x="127.33333333333334" y="0.0" width="121.33333333333334" height="33"/>
                                                 <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>

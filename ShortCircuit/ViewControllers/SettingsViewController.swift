@@ -7,6 +7,23 @@
 
 import UIKit
 
+enum Skin: CaseIterable {
+    case bolt
+    case boltcar
+    case cloud
+    
+    var selection: String {
+        switch self {
+        case .bolt:
+            return "bolt.fill"
+        case .boltcar:
+            return "bolt.car.fill"
+        case .cloud:
+            return "bolt.horizontal.icloud.fill"
+        }
+    }
+}
+
 final class SettingsViewController: UIViewController {
     
     @IBOutlet var playerSettingsLabel: UILabel!
@@ -34,30 +51,47 @@ final class SettingsViewController: UIViewController {
     
     
     private let storageManager = StorageManager.shared
-    
     private var playerList: [User] = []
+    private var lastPlayer: User!
     
     
-    var gameSpeed = 3
+    
+    
+    
+    
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        saveButton.layer.cornerRadius = 5
+        
+        
+        
         storageManager.read { users in
             switch users {
-            case .success(let usernames):
-                self.playerList += usernames
+            case .success(let players):
+                self.playerList = players
                 
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
         
+        
+        //lastPlayer = playerList.last
+        
+        
+        
+        
+        checkPlayerSelection()
+        checkPlayerSkin()
+        
+        
         view.setGradientBackground()
         
-        setVisualSettings()
+        setSaveButtonState()
         
         modeSelectButton.menu = addModeMenu()
         modeSelectButton.showsMenuAsPrimaryAction = true
@@ -76,9 +110,12 @@ final class SettingsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        
+        
         animateWithFlashEffect(for: playerSettingsLabel)
         animateWithFlashEffect(for: gameSettingsLabel)
     }
+    
     
     
     @IBAction func gameModeSelectTapped(_ sender: Any) {
@@ -87,6 +124,8 @@ final class SettingsViewController: UIViewController {
     
     
     @IBAction func saveButtonTapped(_ sender: Any) {
+        guard let newSkin = lastPlayer.skin else { return }
+        storageManager.update(lastPlayer, newSkin: newSkin)
         
         
         dismiss(animated: true)
@@ -96,32 +135,50 @@ final class SettingsViewController: UIViewController {
     
     
     
+    private func checkPlayerSelection() {
+        if playerList.isEmpty {
+            saveButton.isEnabled = false
+        } else {
+            playerNameLabel.text = playerList.last?.name
+            saveButton.isEnabled = true
+            
+        }
+    }
     
     
-    private func setVisualSettings() {
+    private func checkPlayerSkin() {
+        guard let player = lastPlayer else { return }
+        guard let skin = player.skin else { return }
+        playerSkinImage.image = UIImage(systemName: skin)
+    }
+    
+    
+    private func setSaveButtonState() {
         
-        saveButton.backgroundColor = .systemGreen
         
+        if saveButton.state == .disabled {
+            saveButton.backgroundColor = .systemGray
+        } else {
+            saveButton.backgroundColor = .systemGreen
+            
+        }
         
-        
-        
-        
-        
-        saveButton.layer.cornerRadius = 5
         
     }
     
     private func addPlayerMenu() -> UIMenu {
         
-        storageManager.read { users in
-            switch users {
-            case .success(let usernames):
-                self.playerList = usernames
-                
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        storageManager.read { users in
+//            switch users {
+//            case .success(let usernames):
+//                self.playerList = usernames
+//
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+        
+        
         
         
         var playersMenu: [UIAction] = []
@@ -131,19 +188,29 @@ final class SettingsViewController: UIViewController {
                                     handler: { _ in
             
             self.createNewPlayer()
+            
+            
         })
         
         playersMenu.append(createPlayer)
             
             playerList.forEach { player in
-                
-                let item = UIAction(title: player.name ?? "uknown user" ,
+                guard let playerName = player.name else { return }
+                let item = UIAction(title: playerName,
                                     image: UIImage(systemName: "person.circle.fill"),
                                     handler: { _ in
                     
+                    self.lastPlayer = player
+                    
                     self.playerNameLabel.text = player.name
-                }
-                )
+                    
+                    guard let skin = player.skin else { return }
+                    self.playerSkinImage.image = UIImage(systemName: skin)
+                    
+                    
+                    
+                    
+                })
                 
                 playersMenu.append(item)
                 
@@ -167,8 +234,11 @@ final class SettingsViewController: UIViewController {
             guard let inputName = alert.textFields?.first?.text else { return }
             self.playerNameLabel.text = inputName
             
-            self.storageManager.create(inputName) { username in
-                
+            self.storageManager.create(inputName) { player in
+                self.playerList.append(player)
+                self.lastPlayer = player
+                self.checkPlayerSelection()
+                self.setSaveButtonState()
             }
         }
         
@@ -187,18 +257,21 @@ final class SettingsViewController: UIViewController {
                                          image: UIImage(systemName: "bolt.fill"),
                                          handler: { _ in
                                              self.selectedModeLabel.text = "NORMAL"
+                                             
                                          }),
                                 
                                 UIAction(title: "HARD   X2",
                                          image: UIImage(systemName: "bolt.brakesignal"),
                                          handler: { _ in
                                              self.selectedModeLabel.text = "HARD   X2"
+                                             
                                          }),
                                 
                                 UIAction(title: "EXTREME   X3",
                                          image: UIImage(systemName: "bolt.car.fill"),
                                          handler: { _ in
                                              self.selectedModeLabel.text = "EXTREME   X3"
+                                             
                                          })
                               ])
         
@@ -211,21 +284,27 @@ final class SettingsViewController: UIViewController {
                               children: [
                                 
                                 UIAction(title: "BOLT SKIN",
-                                         image: UIImage(systemName: "bolt.fill"),
+                                         image: UIImage(systemName: Skin.bolt.selection),
                                          handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: "bolt.fill")
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
+                                             self.lastPlayer.skin = Skin.bolt.selection
+    
                                          }),
                                 
                                 UIAction(title: "CAR SKIN",
-                                         image: UIImage(systemName: "bolt.car.fill"),
+                                         image: UIImage(systemName: Skin.boltcar.selection),
                                          handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: "bolt.car.fill")
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.boltcar.selection)
+                                             self.lastPlayer.skin = Skin.boltcar.selection
+                                             
                                          }),
                                 
                                 UIAction(title: "CLOUD SKIN",
-                                         image: UIImage(systemName: "bolt.horizontal.icloud.fill"),
+                                         image: UIImage(systemName: Skin.cloud.selection),
                                          handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: "bolt.horizontal.icloud.fill")
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.cloud.selection)
+                                             self.lastPlayer.skin = Skin.cloud.selection
+                                             
                                          })
                               ])
         

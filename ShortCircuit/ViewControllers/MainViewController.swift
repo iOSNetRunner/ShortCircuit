@@ -17,7 +17,7 @@ final class MainViewController: UIViewController {
     
     private var spawnTimer: Timer?
     
-    var currentPlayer: User!
+    var currentPlayer: User?
     
     
     @IBOutlet var startButton: UIButton!
@@ -35,6 +35,8 @@ final class MainViewController: UIViewController {
             startButton.isEnabled = false
             startButton.setTitleColor(.gray, for: .disabled)
         }
+        
+        
         
         
         
