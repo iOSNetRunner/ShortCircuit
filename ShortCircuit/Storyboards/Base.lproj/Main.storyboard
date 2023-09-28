@@ -285,8 +285,8 @@ CIRCUIT</string>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="extreme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7t-zU-RGA">
-                                                <rect key="frame" x="134" y="6.3333333333333126" width="86.666666666666686" height="20.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="normal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7t-zU-RGA">
+                                                <rect key="frame" x="139" y="6.3333333333333126" width="77" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
                                                 <color key="textColor" systemColor="systemYellowColor"/>
                                                 <nil key="highlightedColor"/>
