@@ -39,13 +39,8 @@ final class StorageManager {
         saveContext()
     }
     
-    
-    
-    
     func read(completion: (Result<[User], Error>) -> Void) {
-        
         let fetchRequest = User.fetchRequest()
-        
         do {
             let users = try viewContext.fetch(fetchRequest)
             completion(.success(users))
@@ -54,7 +49,12 @@ final class StorageManager {
         }
     }
     
-    
+    func updateLastSelection(previousUser: User? = nil, newUser: User) {
+        newUser.lastSelected = true
+        guard let previousUser else { return }
+        previousUser.lastSelected = false
+        
+    }
     
     func update(_ user: User, newSkin: String) {
         user.skin = newSkin

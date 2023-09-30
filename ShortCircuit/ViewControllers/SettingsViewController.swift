@@ -7,91 +7,6 @@
 
 import UIKit
 
-enum Skin {
-    case bolt
-    case boltcar
-    case cloud
-    
-    var actionTitle: String {
-        switch self {
-        case .bolt:
-            return "BOLT SKIN"
-        case .boltcar:
-            return "CAR SKIN"
-        case .cloud:
-            return "CLOUD SKIN"
-        }
-    }
-    
-    var selection: String {
-        switch self {
-        case .bolt:
-            return "bolt.fill"
-        case .boltcar:
-            return "bolt.car.fill"
-        case .cloud:
-            return "bolt.horizontal.icloud.fill"
-        }
-    }
-}
-
-enum Mode {
-    case normal
-    case hard
-    case extreme
-    
-    var selection: String {
-        switch self {
-            
-        case .normal:
-            return "normal"
-        case .hard:
-            return "hard x2"
-        case .extreme:
-            return "extreme x3"
-        }
-    }
-    
-    var speed: Int64 {
-        switch self {
-        case .normal:
-            return 3
-        case .hard:
-            return 2
-        case .extreme:
-            return 1
-        }
-    }
-}
-
-enum Obstacle {
-    case battery
-    case box
-    case water
-    
-    var actionTitle: String {
-        switch self {
-        case .battery:
-            return "BATTERYBLOCK"
-        case .box:
-            return "BOX"
-        case .water:
-            return "WATER"
-        }
-    }
-    
-    var selection: String {
-        switch self {
-        case .battery:
-            return "bolt.fill.batteryblock.fill"
-        case .box:
-            return "shippingbox.fill"
-        case .water:
-            return "water.waves"
-        }
-    }
-}
-
 final class SettingsViewController: UIViewController {
     
     //MARK: - IBOutlets
@@ -112,9 +27,16 @@ final class SettingsViewController: UIViewController {
     
     @IBOutlet var saveButton: UIButton!
     
+    //MARK: - Private properties
     private let storageManager = StorageManager.shared
     private var playerList: [User] = []
-    private var lastPlayer: User!
+    
+    //MARK: - Other properties
+    var lastPlayer: User!
+    unowned var delegate: SettingsViewControllerDelegate!
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+        return.all
+    }
     
     //MARK: - View Life Cycle Methods
     override func viewDidLoad() {
@@ -125,8 +47,6 @@ final class SettingsViewController: UIViewController {
         playerAvatar.layer.cornerRadius = playerAvatar.frame.width / 2
         
         loadDataBase()
-        
-        lastPlayer = playerList.last
         
         checkPlayerSelection()
         checkPlayerAvatar()
@@ -158,33 +78,21 @@ final class SettingsViewController: UIViewController {
         
         playerSelectButton.menu = addPlayerMenu()
         setSaveButtonState()
-        
-    
     }
-    
-    
-    
     
     
     
     // MARK: - IBActions
     @IBAction func saveButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
-        
-        storageManager.update(lastPlayer, newMode: lastPlayer.speed)
-        
-        
-        
         savePlayerSkin()
-        saveObstacleSkin()
-        
         savePlayerImage()
-      
+        savePlayerMode()
+        saveObstacleSkin()
+        delegate.setCurrentPlayer(lastPlayer)
+        
+        dismiss(animated: true)
     }
-    
-    
-    
-    
+
     @IBAction func importImage(_ sender: Any) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -193,21 +101,13 @@ final class SettingsViewController: UIViewController {
     }
     
     
-    //MARK: - Private methods
+    //MARK: - Check player parameters
     private func checkPlayerSelection() {
         if playerList.isEmpty {
             saveButton.isEnabled = false
         } else {
-            // change this to user which will come from previous screen 28.09 02:09 |
-            playerNameLabel.text = playerList.last?.name
-// 1st screen -> var User! -> guard User & pass data to settings. If no User - do not init.
-// NO USER -> SETTINGS -> USER create -> SAVE BUTTON -> PASSES USER TO 1 screen
-// var User Loads -> Settings -> var lastPlayer = selectedUser
-            
-            
-            
+            playerNameLabel.text = lastPlayer.name
             saveButton.isEnabled = true
-            
         }
     }
     
@@ -227,9 +127,9 @@ final class SettingsViewController: UIViewController {
         guard let player = lastPlayer else { return }
         var gameMode: String {
             switch player.speed {
-                case 2: return Mode.hard.selection
-                case 1: return Mode.extreme.selection
-                default: return Mode.normal.selection
+            case 2: return Mode.hard.selection
+            case 1: return Mode.extreme.selection
+            default: return Mode.normal.selection
             }
         }
         selectedModeLabel.text = gameMode
@@ -241,86 +141,52 @@ final class SettingsViewController: UIViewController {
         selectedObstacleSkin.image = UIImage(systemName: obstacle)
     }
     
-    
     private func setSaveButtonState() {
-        
-        
         if saveButton.state == .disabled {
             saveButton.backgroundColor = .systemGray
         } else {
             saveButton.backgroundColor = .systemGreen
-            
         }
-        
-        
     }
     
+    
+    //MARK: - UIMenu implementation
     private func addPlayerMenu() -> UIMenu {
-        
-        
-        
-//        storageManager.read { users in
-//            switch users {
-//            case .success(let players):
-//                self.playerList = players
-//
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-        
-        
-        
-        
         var playersMenu: [UIAction] = []
         
         let createPlayer = UIAction(title: "CREATE NEW PLAYER",
                                     image: UIImage(systemName: "plus.circle.fill"),
                                     handler: { _ in
-            
             self.createNewPlayer()
             self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
             self.playerAvatar.image = nil
             self.selectedModeLabel.text = Mode.normal.selection
             self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
-            
-            
         })
         
         playersMenu.append(createPlayer)
         
-            
-            playerList.forEach { player in
-                guard let playerName = player.name else { return }
-                let item = UIAction(title: playerName,
-                                    image: UIImage(systemName: "person.circle.fill"),
-                                    handler: { _ in
-                    
-                    self.lastPlayer = player
-                    
-                    self.playerNameLabel.text = player.name
-                    self.checkPlayerMode()
-                    
-                    self.checkPlayerSkin()
-                    self.checkObstacle()
-                    self.checkPlayerAvatar()
-                    
-                    self.searchPlayer(player)
-                    
-                    
-                })
+        
+        playerList.forEach { player in
+            guard let playerName = player.name else { return }
+            let item = UIAction(title: playerName,
+                                image: UIImage(systemName: "person.circle.fill"),
+                                handler: { _ in
                 
-                playersMenu.append(item)
+                self.lastPlayer = player
+                self.playerNameLabel.text = player.name
+                self.checkPlayerMode()
+                self.checkPlayerSkin()
+                self.checkObstacle()
+                self.checkPlayerAvatar()
+            })
+            
+            playersMenu.append(item)
         }
-        
-        
-        
         return UIMenu(title: "SELECT PLAYER", children: playersMenu)
     }
     
     private func createNewPlayer() {
-        
-        
         let alert = UIAlertController(title: "Enter your name", message: nil, preferredStyle: .alert)
         alert.addTextField()
         
@@ -344,14 +210,46 @@ final class SettingsViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    private func addPlayerSkinMenu() -> UIMenu {
+        let skinMenu = UIMenu(title: "SELECT YOUR SKIN",
+                              options: .displayInline,
+                              children: [
+                                
+                                UIAction(title: Skin.bolt.actionTitle,
+                                         image: UIImage(systemName: Skin.bolt.selection),
+                                         handler: { _ in
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
+                                             self.lastPlayer.skin = Skin.bolt.selection
+                                             
+                                         }),
+                                
+                                UIAction(title: Skin.boltcar.actionTitle,
+                                         image: UIImage(systemName: Skin.boltcar.selection),
+                                         handler: { _ in
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.boltcar.selection)
+                                             self.lastPlayer.skin = Skin.boltcar.selection
+                                             
+                                         }),
+                                
+                                UIAction(title: Skin.cloud.actionTitle,
+                                         image: UIImage(systemName: Skin.cloud.selection),
+                                         handler: { _ in
+                                             self.playerSkinImage.image = UIImage(systemName: Skin.cloud.selection)
+                                             self.lastPlayer.skin = Skin.cloud.selection
+                                             
+                                         })
+                              ])
+        
+        return skinMenu
+    }
+    
     private func addModeMenu() -> UIMenu {
         let modeMenu = UIMenu(
             title: "SELECT GAME MODE",
             options: .displayInline,
             children: [
-                
                 UIAction(title: Mode.normal.selection,
-                         image: UIImage(systemName: "bolt.fill")?.withTintColor(.systemYellow),
+                         image: UIImage(systemName: "bolt.fill"),
                          handler: { _ in
                              self.selectedModeLabel.text = Mode.normal.selection
                              self.lastPlayer.speed = Mode.normal.speed
@@ -373,39 +271,6 @@ final class SettingsViewController: UIViewController {
             ])
         
         return modeMenu
-    }
-    
-    private func addPlayerSkinMenu() -> UIMenu {
-        let skinMenu = UIMenu(title: "SELECT YOUR SKIN",
-                              options: .displayInline,
-                              children: [
-                                
-                                UIAction(title: Skin.bolt.actionTitle,
-                                         image: UIImage(systemName: Skin.bolt.selection),
-                                         handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
-                                             self.lastPlayer.skin = Skin.bolt.selection
-    
-                                         }),
-                                
-                                UIAction(title: Skin.boltcar.actionTitle,
-                                         image: UIImage(systemName: Skin.boltcar.selection),
-                                         handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: Skin.boltcar.selection)
-                                             self.lastPlayer.skin = Skin.boltcar.selection
-                                             
-                                         }),
-                                
-                                UIAction(title: Skin.cloud.actionTitle,
-                                         image: UIImage(systemName: Skin.cloud.selection),
-                                         handler: { _ in
-                                             self.playerSkinImage.image = UIImage(systemName: Skin.cloud.selection)
-                                             self.lastPlayer.skin = Skin.cloud.selection
-                                             
-                                         })
-                              ])
-        
-        return skinMenu
     }
     
     private func addObstacleSkinMenu() -> UIMenu {
@@ -441,26 +306,10 @@ final class SettingsViewController: UIViewController {
     }
     
     
-    func searchPlayer(_ player: User) {
-        playerList.forEach { user in
-            if user.name == player.name {
-                guard let index = playerList.firstIndex(of: user) else { return }
-                let playerToMove = playerList.remove(at: index)
-                playerList.append(playerToMove)
-                
-                
-                
-                playerList.forEach { user in
-                    print(user.name)
-                    print()
-                }
-            }
-        }
-        
-        
-    }
     
     
+    
+    //MARK: - CoreData methods
     private func loadDataBase() {
         storageManager.read { users in
             switch users {
@@ -473,23 +322,6 @@ final class SettingsViewController: UIViewController {
         }
     }
     
-    private func savePlayerSkin() {
-        guard let newSkin = lastPlayer.skin else {
-            storageManager.update(lastPlayer, newSkin: Skin.bolt.selection)
-            return
-        }
-        
-        storageManager.update(lastPlayer, newSkin: newSkin)
-    }
-    
-    private func saveObstacleSkin() {
-        guard let newObstacle = lastPlayer.obstacle else {
-            storageManager.update(lastPlayer, newObstacle: Obstacle.battery.selection)
-            return
-        }
-        storageManager.update(lastPlayer, newObstacle: newObstacle)
-    }
-    
     private func savePlayerImage() {
         guard let filename = lastPlayer.name else { return }
         guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
@@ -500,9 +332,9 @@ final class SettingsViewController: UIViewController {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 try FileManager.default.removeItem(atPath: fileURL.path)
-                print("File removed")
+                print("File already exists. Removing.")
             } catch {
-                print("couldn't remove the file at path", error.localizedDescription)
+                print("Couldn't remove the file at path", error.localizedDescription)
             }
         }
         
@@ -513,10 +345,30 @@ final class SettingsViewController: UIViewController {
         } catch {
             print("ERROR saving file", error.localizedDescription)
         }
-        
-        
-        
     }
+    
+    private func savePlayerSkin() {
+        guard let newSkin = lastPlayer.skin else {
+            storageManager.update(lastPlayer, newSkin: Skin.bolt.selection)
+            return
+        }
+        
+        storageManager.update(lastPlayer, newSkin: newSkin)
+    }
+    
+    private func savePlayerMode() {
+        storageManager.update(lastPlayer, newMode: lastPlayer.speed)
+    }
+    
+    private func saveObstacleSkin() {
+        guard let newObstacle = lastPlayer.obstacle else {
+            storageManager.update(lastPlayer, newObstacle: Obstacle.battery.selection)
+            return
+        }
+        storageManager.update(lastPlayer, newObstacle: newObstacle)
+    }
+    
+    
 }
 
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -528,7 +380,7 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
         picker.dismiss(animated: true)
     }
     
-    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
     }
 }

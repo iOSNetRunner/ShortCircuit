@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SettingsViewControllerDelegate: AnyObject {
+    func setCurrentPlayer(_ player: User)
+}
+
 final class MainViewController: UIViewController {
 
     
@@ -14,27 +18,41 @@ final class MainViewController: UIViewController {
     @IBOutlet var gearLogo: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var boltLogo: UIImageView!
+    @IBOutlet var playerSelectionLabel: UILabel!
     
+    private let storageManager = StorageManager.shared
     private var spawnTimer: Timer?
     
     var currentPlayer: User?
-    
+    var playerList: [User] = []
+
     
     @IBOutlet var startButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadLastSelectedPlayer()
 
         view.setGradientBackground()
         
+        spawnTimer = Timer.scheduledTimer(timeInterval: 0.2,
+                                          target: self,
+                                          selector: #selector(animateBackground),
+                                          userInfo: nil,
+                                          repeats: true)
         
-        if currentPlayer != nil {
-            startButton.isEnabled = true
-        } else {
-            startButton.isEnabled = false
-            startButton.setTitleColor(.gray, for: .disabled)
-        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -47,7 +65,9 @@ final class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        spawnTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector( animateBackground), userInfo: nil, repeats: true)
+        checkCurrentPlayer()
+        
+        
         
         animateBackground()
         animateTitle()
@@ -63,13 +83,41 @@ final class MainViewController: UIViewController {
         boltLogo.transform = CGAffineTransform.identity
     }
     
+    private func loadLastSelectedPlayer() {
+        storageManager.read { users in
+            switch users {
+            case .success(let players):
+                self.playerList = players
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
+        guard !playerList.isEmpty else { return }
+        playerList.forEach { player in
+            if player.lastSelected {
+                currentPlayer = player
+            }
+        }
+    }
     
     
-    
+    private func checkCurrentPlayer() {
+        if currentPlayer != nil {
+            startButton.isEnabled = true
+            playerSelectionLabel.text = currentPlayer?.name
+            playerSelectionLabel.textColor = .systemYellow
+        } else {
+            startButton.isEnabled = false
+            startButton.setTitleColor(.gray, for: .disabled)
+            
+        }
+    }
     
     @objc private func animateBackground() {
         let spawnPoint = CGFloat.random(in: view.bounds.minX...view.bounds.maxX)
-        let frameSide = CGFloat.random(in: 10...50)
+        let frameSide = CGFloat.random(in: 10...70)
         
         let bolt = UIImageView(frame: CGRect(x: spawnPoint,
                                                   y: view.bounds.minY,
@@ -153,14 +201,32 @@ final class MainViewController: UIViewController {
     
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let settingsVC = segue.destination as? SettingsViewController else { return }
+                settingsVC.delegate = self
+        guard (currentPlayer != nil) else { return }
+        settingsVC.lastPlayer = currentPlayer
+        
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
+}
+
+extension MainViewController: SettingsViewControllerDelegate {
+    func setCurrentPlayer(_ player: User) {
+        if currentPlayer != nil {
+            storageManager.updateLastSelection(previousUser: currentPlayer, newUser: player)
+        }
+        currentPlayer = player
+        storageManager.updateLastSelection(newUser: player)
+        
+    }
+    
+    
 }

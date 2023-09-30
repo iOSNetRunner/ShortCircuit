@@ -46,6 +46,8 @@ final class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         setVisualSettings()
         gradientTintOverlay.setGradientBackground()
         updateLifeCounter()

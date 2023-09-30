@@ -104,16 +104,35 @@ CIRCUIT</string>
                                     </label>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="hYa-ez-1uA">
+                                <rect key="frame" x="129" y="875.33333333333337" width="172.33333333333337" height="20.333333333333371"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player selected:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10q-5u-SPV">
+                                        <rect key="frame" x="0.0" y="0.0" width="117" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemGreenColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fEo-aN-rlj">
+                                        <rect key="frame" x="148" y="0.0" width="24.333333333333343" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="17"/>
+                                        <color key="textColor" systemColor="systemRedColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Lv8-jV-0bV"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="hYa-ez-1uA" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="1vM-RU-QCM"/>
                             <constraint firstItem="Vje-Kn-zY2" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="Fe3-Cl-UTS"/>
                             <constraint firstItem="1Uv-vW-XWm" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="JC2-pM-UpN"/>
                             <constraint firstItem="tkP-KO-yst" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="0.78" id="Pmp-8s-P5P"/>
                             <constraint firstItem="1Uv-vW-XWm" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1:2.2" id="ThO-CT-Bc6"/>
                             <constraint firstItem="Vje-Kn-zY2" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1.2:1" id="XTE-dY-OnS"/>
                             <constraint firstItem="qze-Im-VWv" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1.6:1" id="clW-qg-SbI"/>
+                            <constraint firstItem="hYa-ez-1uA" firstAttribute="centerY" secondItem="hix-zy-WQj" secondAttribute="centerY" multiplier="1.9" id="hLQ-LS-NxO"/>
                             <constraint firstItem="qze-Im-VWv" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" multiplier="1.8:1" id="kJt-Yv-qak"/>
                             <constraint firstItem="tkP-KO-yst" firstAttribute="centerX" secondItem="hix-zy-WQj" secondAttribute="centerX" id="uqG-WF-fgr"/>
                         </constraints>
@@ -122,6 +141,7 @@ CIRCUIT</string>
                         <outlet property="arrowsImage" destination="FBs-aQ-C3P" id="5i5-ma-5tn"/>
                         <outlet property="boltLogo" destination="tkP-KO-yst" id="ksQ-tv-IFL"/>
                         <outlet property="gearLogo" destination="qze-Im-VWv" id="mA1-LL-zb7"/>
+                        <outlet property="playerSelectionLabel" destination="fEo-aN-rlj" id="goE-LE-T6E"/>
                         <outlet property="startButton" destination="1cI-0G-YQ5" id="a2m-AD-tg7"/>
                         <outlet property="titleLabel" destination="k89-Qc-9rc" id="x7B-Su-ij7"/>
                     </connections>
