@@ -167,7 +167,7 @@ CIRCUIT</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Teh-2D-wLS">
-                                <rect key="frame" x="16" y="147.33333333333334" width="398" height="123.00000000000003"/>
+                                <rect key="frame" x="16" y="147.33333333333334" width="398" height="153.00000000000003"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="l2f-7X-wrm">
                                         <rect key="frame" x="16" y="0.0" width="366" height="33"/>
@@ -224,30 +224,33 @@ CIRCUIT</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8q6-5x-gR6" userLabel="Avatar Stack View">
-                                        <rect key="frame" x="16" y="93" width="366" height="30"/>
+                                        <rect key="frame" x="16" y="93" width="366" height="60"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avatar:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Hx-MI-ioW">
-                                                <rect key="frame" x="0.0" y="0.0" width="82" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="82" height="60"/>
                                                 <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qH1-1r-5xf">
-                                                <rect key="frame" x="173.66666666666666" y="0.0" width="30" height="30"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qH1-1r-5xf">
+                                                <rect key="frame" x="158.66666666666666" y="0.0" width="60" height="60"/>
                                                 <color key="tintColor" systemColor="systemYellowColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="30" id="I5T-0S-Au7"/>
-                                                    <constraint firstAttribute="height" constant="30" id="j6e-LO-Usy"/>
+                                                    <constraint firstAttribute="width" constant="60" id="I5T-0S-Au7"/>
+                                                    <constraint firstAttribute="height" constant="60" id="j6e-LO-Usy"/>
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IyU-2a-2CD">
-                                                <rect key="frame" x="295" y="0.0" width="71" height="30"/>
+                                                <rect key="frame" x="295" y="0.0" width="71" height="60"/>
                                                 <fontDescription key="fontDescription" name="Copperplate-Bold" family="Copperplate" pointSize="20"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="select">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="importImage:" destination="DZ6-oR-YZr" eventType="touchUpInside" id="ow7-9W-3VN"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -378,7 +381,7 @@ CIRCUIT</string>
                     <connections>
                         <outlet property="avatarSelectButton" destination="IyU-2a-2CD" id="KkY-hg-Mqs"/>
                         <outlet property="gameSettingsLabel" destination="f3Q-vX-8yu" id="GJv-Km-qvx"/>
-                        <outlet property="modeSelectButton" destination="vZv-mk-hhu" id="dKg-5x-KVU"/>
+                        <outlet property="modeSelectButton" destination="vZv-mk-hhu" id="KET-Ja-Cmx"/>
                         <outlet property="obstacleSelectButton" destination="HS8-HS-Aey" id="5Ua-BB-NbM"/>
                         <outlet property="playerAvatar" destination="qH1-1r-5xf" id="jhE-XD-6QZ"/>
                         <outlet property="playerNameLabel" destination="mIu-eT-hbt" id="e78-89-oWg"/>

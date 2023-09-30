@@ -94,6 +94,7 @@ enum Obstacle {
 
 final class SettingsViewController: UIViewController {
     
+    //MARK: - IBOutlets
     @IBOutlet var playerSettingsLabel: UILabel!
     @IBOutlet var gameSettingsLabel: UILabel!
     
@@ -111,54 +112,27 @@ final class SettingsViewController: UIViewController {
     
     @IBOutlet var saveButton: UIButton!
     
-    
     private let storageManager = StorageManager.shared
     private var playerList: [User] = []
     private var lastPlayer: User!
     
-    
-    
-    
-    
-    
-    
-    
-    
+    //MARK: - View Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.setGradientBackground()
         saveButton.layer.cornerRadius = 5
+        playerAvatar.layer.cornerRadius = playerAvatar.frame.width / 2
         
-        
-        
-        storageManager.read { users in
-            switch users {
-            case .success(let players):
-                self.playerList = players
-
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-        
+        loadDataBase()
         
         lastPlayer = playerList.last
         
-//        playerList.forEach { user in
-//            print(user.name)
-//        }
-//        print()
-        
         checkPlayerSelection()
+        checkPlayerAvatar()
         checkPlayerSkin()
         checkPlayerMode()
         checkObstacle()
-        
-        
-        
-        view.setGradientBackground()
-        
-        
         
         modeSelectButton.menu = addModeMenu()
         modeSelectButton.showsMenuAsPrimaryAction = true
@@ -170,15 +144,10 @@ final class SettingsViewController: UIViewController {
         obstacleSelectButton.showsMenuAsPrimaryAction = true
         
         playerSelectButton.showsMenuAsPrimaryAction = true
-        
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        
         
         animateWithFlashEffect(for: playerSettingsLabel)
         animateWithFlashEffect(for: gameSettingsLabel)
@@ -186,37 +155,19 @@ final class SettingsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         playerSelectButton.menu = addPlayerMenu()
-        
-        
-        
-        
         setSaveButtonState()
-    }
-    
-    
-    
-    @IBAction func gameModeSelectTapped(_ sender: Any) {
         
+    
     }
     
-    private func savePlayerSkin() {
-        guard let newSkin = lastPlayer.skin else {
-            storageManager.update(lastPlayer, newSkin: Skin.bolt.selection)
-            return
-        }
-        
-        storageManager.update(lastPlayer, newSkin: newSkin)
-    }
     
-    private func saveObstacleSkin() {
-        guard let newObstacle = lastPlayer.obstacle else {
-            storageManager.update(lastPlayer, newObstacle: Obstacle.battery.selection)
-            return
-        }
-        storageManager.update(lastPlayer, newObstacle: newObstacle)
-    }
     
+    
+    
+    
+    // MARK: - IBActions
     @IBAction func saveButtonTapped(_ sender: Any) {
         dismiss(animated: true)
         
@@ -227,23 +178,22 @@ final class SettingsViewController: UIViewController {
         savePlayerSkin()
         saveObstacleSkin()
         
-        
-
-        
-        
-        //print(lastPlayer)
-        
-        
-        
-        
+        savePlayerImage()
+      
     }
     
     
     
     
+    @IBAction func importImage(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        present(imagePicker, animated: true)
+    }
     
     
-    
+    //MARK: - Private methods
     private func checkPlayerSelection() {
         if playerList.isEmpty {
             saveButton.isEnabled = false
@@ -261,13 +211,17 @@ final class SettingsViewController: UIViewController {
         }
     }
     
-    
     private func checkPlayerSkin() {
         guard let player = lastPlayer else { return }
         guard let skin = player.skin else { return }
         playerSkinImage.image = UIImage(systemName: skin)
     }
     
+    private func checkPlayerAvatar() {
+        guard let player = lastPlayer else { return }
+        guard let dataPath = player.avatar else { return }
+        playerAvatar.image = UIImage(contentsOfFile: dataPath)
+    }
     
     private func checkPlayerMode() {
         guard let player = lastPlayer else { return }
@@ -325,6 +279,10 @@ final class SettingsViewController: UIViewController {
                                     handler: { _ in
             
             self.createNewPlayer()
+            self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
+            self.playerAvatar.image = nil
+            self.selectedModeLabel.text = Mode.normal.selection
+            self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
             
             
         })
@@ -345,6 +303,7 @@ final class SettingsViewController: UIViewController {
                     
                     self.checkPlayerSkin()
                     self.checkObstacle()
+                    self.checkPlayerAvatar()
                     
                     self.searchPlayer(player)
                     
@@ -352,8 +311,6 @@ final class SettingsViewController: UIViewController {
                 })
                 
                 playersMenu.append(item)
-                
-            
         }
         
         
@@ -516,7 +473,64 @@ final class SettingsViewController: UIViewController {
         }
     }
     
+    private func savePlayerSkin() {
+        guard let newSkin = lastPlayer.skin else {
+            storageManager.update(lastPlayer, newSkin: Skin.bolt.selection)
+            return
+        }
+        
+        storageManager.update(lastPlayer, newSkin: newSkin)
+    }
     
+    private func saveObstacleSkin() {
+        guard let newObstacle = lastPlayer.obstacle else {
+            storageManager.update(lastPlayer, newObstacle: Obstacle.battery.selection)
+            return
+        }
+        storageManager.update(lastPlayer, newObstacle: newObstacle)
+    }
+    
+    private func savePlayerImage() {
+        guard let filename = lastPlayer.name else { return }
+        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        guard let imageData = playerAvatar.image?.pngData() else { return }
+        
+        let fileURL = documents.appendingPathComponent("\(filename).png")
+        
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: fileURL.path)
+                print("File removed")
+            } catch {
+                print("couldn't remove the file at path", error.localizedDescription)
+            }
+        }
+        
+        do {
+            try imageData.write(to: fileURL)
+            storageManager.update(lastPlayer, newPic: fileURL.path)
+            print("IMAGE SAVE SUCCESS")
+        } catch {
+            print("ERROR saving file", error.localizedDescription)
+        }
+        
+        
+        
+    }
+}
+
+extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let image = info[.originalImage] as? UIImage else { return }
+        playerAvatar.image = image.fixOrientation()
+        
+        picker.dismiss(animated: true)
+    }
+    
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
 }
 
 private extension UIViewController {
