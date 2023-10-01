@@ -27,6 +27,7 @@ final class GameViewController: UIViewController {
     @IBOutlet var scoreLabel: UILabel!
     @IBOutlet var lifeLeftLabel: UILabel!
     
+    private let storageManager = StorageManager.shared
     private let moveStep: CGFloat = 100
     
     private var obstaclesPassed = 0
@@ -38,15 +39,15 @@ final class GameViewController: UIViewController {
     private var scoreTimer: Timer?
     private var spawnCoordinates: [CGFloat]?
     
-    override var prefersStatusBarHidden: Bool {
-        true
-    }
+    var currentPlayer: User!
+    
+    override var prefersStatusBarHidden: Bool { true }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        print(currentPlayer)
         
         setVisualSettings()
         gradientTintOverlay.setGradientBackground()
@@ -258,6 +259,7 @@ final class GameViewController: UIViewController {
                     self.animatePlayerDeath()
                     self.backgroundImage.layer.removeAllAnimations()
                     self.backgroundImageMirrored.layer.removeAllAnimations()
+                    self.storageManager.update(self.currentPlayer, newScore: Int64(self.obstaclesPassed))
                 }
                 self.lifeLeftCount()
                 self.updateLifeCounter()

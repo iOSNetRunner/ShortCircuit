@@ -58,13 +58,11 @@ final class StorageManager {
     
     func update(_ user: User, newSkin: String) {
         user.skin = newSkin
-        print("Coredata SKIN |\(newSkin)| saved to \(user.name ?? "1")")
         saveContext()
     }
     
     func update(_ user: User, newMode: Int64) {
         user.speed = newMode
-        print("Saved \(newMode) to \(user.name ?? "1")")
         saveContext()
     }
     
@@ -75,7 +73,6 @@ final class StorageManager {
     
     func update(_ user: User, newObstacle: String) {
         user.obstacle = newObstacle
-        print("CoreData OBSTACLE: |\(newObstacle)| saved to \(user.name ?? "1")")
         saveContext()
     }
     
@@ -83,7 +80,6 @@ final class StorageManager {
         user.score = newScore
         saveContext()
     }
-    
     
     func delete(_ user: User) {
         viewContext.delete(user)

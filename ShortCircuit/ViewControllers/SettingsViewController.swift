@@ -16,8 +16,8 @@ final class SettingsViewController: UIViewController {
     @IBOutlet var playerNameLabel: UILabel!
     @IBOutlet var playerSkinImage: UIImageView!
     @IBOutlet var playerAvatar: UIImageView!
-    @IBOutlet var selectedModeLabel: UILabel!
-    @IBOutlet var selectedObstacleSkin: UIImageView!
+    @IBOutlet var playerModeLabel: UILabel!
+    @IBOutlet var playerObstacleSkin: UIImageView!
     
     @IBOutlet var playerSelectButton: UIButton!
     @IBOutlet var skinSelectButton: UIButton!
@@ -25,7 +25,7 @@ final class SettingsViewController: UIViewController {
     @IBOutlet var modeSelectButton: UIButton!
     @IBOutlet var obstacleSelectButton: UIButton!
     
-    @IBOutlet var saveButton: UIButton!
+    @IBOutlet var saveAndExitButton: UIButton!
     
     //MARK: - Private properties
     private let storageManager = StorageManager.shared
@@ -34,6 +34,8 @@ final class SettingsViewController: UIViewController {
     //MARK: - Other properties
     var lastPlayer: User!
     unowned var delegate: SettingsViewControllerDelegate!
+    
+    override var prefersStatusBarHidden: Bool { true }
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return.all
     }
@@ -43,7 +45,7 @@ final class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         view.setGradientBackground()
-        saveButton.layer.cornerRadius = 5
+        saveAndExitButton.layer.cornerRadius = 5
         playerAvatar.layer.cornerRadius = playerAvatar.frame.width / 2
         
         loadDataBase()
@@ -96,6 +98,7 @@ final class SettingsViewController: UIViewController {
     @IBAction func importImage(_ sender: Any) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         
         present(imagePicker, animated: true)
     }
@@ -104,10 +107,10 @@ final class SettingsViewController: UIViewController {
     //MARK: - Check player parameters
     private func checkPlayerSelection() {
         if playerList.isEmpty {
-            saveButton.isEnabled = false
+            saveAndExitButton.isEnabled = false
         } else {
             playerNameLabel.text = lastPlayer.name
-            saveButton.isEnabled = true
+            saveAndExitButton.isEnabled = true
         }
     }
     
@@ -132,20 +135,20 @@ final class SettingsViewController: UIViewController {
             default: return Mode.normal.selection
             }
         }
-        selectedModeLabel.text = gameMode
+        playerModeLabel.text = gameMode
     }
     
     private func checkObstacle() {
         guard let player = lastPlayer else { return }
         guard let obstacle = player.obstacle else { return }
-        selectedObstacleSkin.image = UIImage(systemName: obstacle)
+        playerObstacleSkin.image = UIImage(systemName: obstacle)
     }
     
     private func setSaveButtonState() {
-        if saveButton.state == .disabled {
-            saveButton.backgroundColor = .systemGray
+        if saveAndExitButton.state == .disabled {
+            saveAndExitButton.backgroundColor = .systemGray
         } else {
-            saveButton.backgroundColor = .systemGreen
+            saveAndExitButton.backgroundColor = .systemGreen
         }
     }
     
@@ -160,8 +163,8 @@ final class SettingsViewController: UIViewController {
             self.createNewPlayer()
             self.playerSkinImage.image = UIImage(systemName: Skin.bolt.selection)
             self.playerAvatar.image = nil
-            self.selectedModeLabel.text = Mode.normal.selection
-            self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
+            self.playerModeLabel.text = Mode.normal.selection
+            self.playerObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
         })
         
         playersMenu.append(createPlayer)
@@ -187,13 +190,17 @@ final class SettingsViewController: UIViewController {
     }
     
     private func createNewPlayer() {
-        let alert = UIAlertController(title: "Enter your name", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter your name",
+                                      message: "10 characters max",
+                                      preferredStyle: .alert)
         alert.addTextField()
+        alert.textFields?.first?.delegate = self
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let sumbitAction = UIAlertAction(title: "Save", style: .default) { _ in
             
             guard let inputName = alert.textFields?.first?.text else { return }
+            guard inputName != "" else { return }
             self.playerNameLabel.text = inputName
             
             self.storageManager.create(inputName) { player in
@@ -202,10 +209,16 @@ final class SettingsViewController: UIViewController {
                 self.checkPlayerSelection()
                 self.setSaveButtonState()
             }
+            
+            
         }
+        
         
         alert.addAction(cancelAction)
         alert.addAction(sumbitAction)
+        
+        
+        
         
         present(alert, animated: true)
     }
@@ -239,7 +252,6 @@ final class SettingsViewController: UIViewController {
                                              
                                          })
                               ])
-        
         return skinMenu
     }
     
@@ -248,24 +260,25 @@ final class SettingsViewController: UIViewController {
             title: "SELECT GAME MODE",
             options: .displayInline,
             children: [
+                
                 UIAction(title: Mode.normal.selection,
                          image: UIImage(systemName: "bolt.fill"),
                          handler: { _ in
-                             self.selectedModeLabel.text = Mode.normal.selection
+                             self.playerModeLabel.text = Mode.normal.selection
                              self.lastPlayer.speed = Mode.normal.speed
                          }),
                 
                 UIAction(title: Mode.hard.selection,
                          image: UIImage(systemName: "bolt.brakesignal"),
                          handler: { _ in
-                             self.selectedModeLabel.text = Mode.hard.selection
+                             self.playerModeLabel.text = Mode.hard.selection
                              self.lastPlayer.speed = Mode.hard.speed
                          }),
                 
                 UIAction(title: Mode.extreme.selection,
                          image: UIImage(systemName: "bolt.car.fill"),
                          handler: { _ in
-                             self.selectedModeLabel.text = Mode.extreme.selection
+                             self.playerModeLabel.text = Mode.extreme.selection
                              self.lastPlayer.speed = Mode.extreme.speed
                          })
             ])
@@ -282,21 +295,21 @@ final class SettingsViewController: UIViewController {
                 UIAction(title: Obstacle.battery.actionTitle,
                          image: UIImage(systemName: Obstacle.battery.selection),
                          handler: { _ in
-                             self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
+                             self.playerObstacleSkin.image = UIImage(systemName: Obstacle.battery.selection)
                              self.lastPlayer.obstacle = Obstacle.battery.selection
                          }),
                 
                 UIAction(title: Obstacle.box.actionTitle,
                          image: UIImage(systemName: Obstacle.box.selection),
                          handler: { _ in
-                             self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.box.selection)
+                             self.playerObstacleSkin.image = UIImage(systemName: Obstacle.box.selection)
                              self.lastPlayer.obstacle = Obstacle.box.selection
                          }),
                 
                 UIAction(title: Obstacle.water.actionTitle,
                          image: UIImage(systemName: Obstacle.water.selection),
                          handler: { _ in
-                             self.selectedObstacleSkin.image = UIImage(systemName: Obstacle.water.selection)
+                             self.playerObstacleSkin.image = UIImage(systemName: Obstacle.water.selection)
                              self.lastPlayer.obstacle = Obstacle.water.selection
                          })
                 
@@ -332,7 +345,6 @@ final class SettingsViewController: UIViewController {
         if FileManager.default.fileExists(atPath: fileURL.path) {
             do {
                 try FileManager.default.removeItem(atPath: fileURL.path)
-                print("File already exists. Removing.")
             } catch {
                 print("Couldn't remove the file at path", error.localizedDescription)
             }
@@ -341,7 +353,7 @@ final class SettingsViewController: UIViewController {
         do {
             try imageData.write(to: fileURL)
             storageManager.update(lastPlayer, newPic: fileURL.path)
-            print("IMAGE SAVE SUCCESS")
+            
         } catch {
             print("ERROR saving file", error.localizedDescription)
         }
@@ -371,10 +383,17 @@ final class SettingsViewController: UIViewController {
     
 }
 
+extension SettingsViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        if text.count > 9 { textField.text = "" }
+    }
+}
+
 extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        guard let image = info[.originalImage] as? UIImage else { return }
+        guard let image = info[.editedImage] as? UIImage else { return }
         playerAvatar.image = image.fixOrientation()
         
         picker.dismiss(animated: true)

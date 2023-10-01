@@ -1,5 +1,5 @@
 //
-//  Player.swift
+//  GameParameters.swift
 //  ShortCircuit
 //
 //  Created by Dmitrii Galatskii on 24.09.2023.
@@ -47,7 +47,7 @@ enum Mode {
         case .hard:
             return "HARD  X2"
         case .extreme:
-            return "EXTREME X3"
+            return "EXTREME  X3"
         }
     }
     

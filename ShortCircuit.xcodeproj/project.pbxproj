@@ -20,6 +20,7 @@
 		607BA8012ABC4B0A00086F54 /* Player.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 607BA7FF2ABC4B0A00086F54 /* Player.xcdatamodeld */; };
 		607BA8032ABC4B0B00086F54 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607BA8022ABC4B0B00086F54 /* Assets.xcassets */; };
 		607BA8062ABC4B0B00086F54 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607BA8042ABC4B0B00086F54 /* LaunchScreen.storyboard */; };
+		60D008A32AC96D5100BFE605 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D008A22AC96D5100BFE605 /* ScoreViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		607BA8022ABC4B0B00086F54 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		607BA8052ABC4B0B00086F54 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		607BA8072ABC4B0B00086F54 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60D008A22AC96D5100BFE605 /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				607BA7FA2ABC4B0A00086F54 /* GameViewController.swift */,
 				606C2E9C2ABC817D00C8167E /* MainViewController.swift */,
 				6058FF5C2AC046C800C5CC60 /* SettingsViewController.swift */,
+				60D008A22AC96D5100BFE605 /* ScoreViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60D008A32AC96D5100BFE605 /* ScoreViewController.swift in Sources */,
 				607BA8012ABC4B0A00086F54 /* Player.xcdatamodeld in Sources */,
 				607BA7FB2ABC4B0A00086F54 /* GameViewController.swift in Sources */,
 				606C2EA02ABC8BC300C8167E /* Extension + UIView.swift in Sources */,

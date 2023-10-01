@@ -21,11 +21,12 @@ final class MainViewController: UIViewController {
     @IBOutlet var playerSelectionLabel: UILabel!
     
     private let storageManager = StorageManager.shared
-    private var spawnTimer: Timer?
+    private var animationTimer: Timer?
     
-    var currentPlayer: User?
+    var currentPlayer: User!
     var playerList: [User] = []
 
+    override var prefersStatusBarHidden: Bool { true }
     
     @IBOutlet var startButton: UIButton!
     
@@ -37,28 +38,14 @@ final class MainViewController: UIViewController {
 
         view.setGradientBackground()
         
-        spawnTimer = Timer.scheduledTimer(timeInterval: 0.2,
+        
+        animationTimer = Timer.scheduledTimer(timeInterval: 0.2,
                                           target: self,
                                           selector: #selector(animateBackground),
                                           userInfo: nil,
                                           repeats: true)
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    
         
     }
     
@@ -79,8 +66,8 @@ final class MainViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        titleLabel.transform = CGAffineTransform.identity
-        boltLogo.transform = CGAffineTransform.identity
+//        titleLabel.transform = CGAffineTransform.identity
+//        boltLogo.transform = CGAffineTransform.identity
     }
     
     private func loadLastSelectedPlayer() {
@@ -174,7 +161,6 @@ final class MainViewController: UIViewController {
         })
     }
     
-    
     private func animateArrows() {
         UIView.animate(withDuration: 3.0,
                        delay: 0,
@@ -203,16 +189,33 @@ final class MainViewController: UIViewController {
     
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let settingsVC = segue.destination as? SettingsViewController else { return }
-                settingsVC.delegate = self
-        guard (currentPlayer != nil) else { return }
-        settingsVC.lastPlayer = currentPlayer
         
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        switch segue.identifier {
+            
+        case "start":
+            guard let gameVC = segue.destination as? GameViewController else { return }
+            gameVC.currentPlayer = currentPlayer
+        case "leaderboard":
+            guard let scoreVC = segue.destination as? ScoreViewController else { return }
+            scoreVC.playerList = playerList
+        case "settings":
+            guard let settingsVC = segue.destination as? SettingsViewController else { return }
+                    settingsVC.delegate = self
+            guard (currentPlayer != nil) else { return }
+            settingsVC.lastPlayer = currentPlayer
+        case .none:
+            return
+        case .some(_):
+            return
+        }
+        
+        
+        
+        
+        
+        
+        
     }
     
 
@@ -225,7 +228,6 @@ extension MainViewController: SettingsViewControllerDelegate {
         }
         currentPlayer = player
         storageManager.updateLastSelection(newUser: player)
-        
     }
     
     
