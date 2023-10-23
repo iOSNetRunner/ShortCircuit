@@ -10,21 +10,21 @@ import UIKit
 final class SettingsViewController: UIViewController {
     
     //MARK: - IBOutlets
-    @IBOutlet weak var playerSettingsLabel: UILabel!
-    @IBOutlet weak var gameSettingsLabel: UILabel!
+    @IBOutlet var playerSettingsLabel: UILabel!
+    @IBOutlet var gameSettingsLabel: UILabel!
     
-    @IBOutlet weak var playerNameLabel: UILabel!
-    @IBOutlet weak var playerSkinImage: UIImageView!
-    @IBOutlet weak var playerAvatar: UIImageView!
-    @IBOutlet weak var playerModeLabel: UILabel!
-    @IBOutlet weak var playerObstacleSkin: UIImageView!
+    @IBOutlet var playerNameLabel: UILabel!
+    @IBOutlet var playerSkinImage: UIImageView!
+    @IBOutlet var playerAvatar: UIImageView!
+    @IBOutlet var playerModeLabel: UILabel!
+    @IBOutlet var playerObstacleSkin: UIImageView!
     
-    @IBOutlet weak var playerSelectButton: UIButton!
-    @IBOutlet weak var skinSelectButton: UIButton!
-    @IBOutlet weak var avatarSelectButton: UIButton!
-    @IBOutlet weak var modeSelectButton: UIButton!
-    @IBOutlet weak var obstacleSelectButton: UIButton!
-    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet var playerSelectButton: UIButton!
+    @IBOutlet var skinSelectButton: UIButton!
+    @IBOutlet var avatarSelectButton: UIButton!
+    @IBOutlet var modeSelectButton: UIButton!
+    @IBOutlet var obstacleSelectButton: UIButton!
+    @IBOutlet var backButton: UIButton!
     
     //MARK: - Private properties
     private let storageManager = StorageManager.shared
