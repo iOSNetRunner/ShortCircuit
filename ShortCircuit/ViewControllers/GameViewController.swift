@@ -9,6 +9,7 @@ import UIKit
 
 final class GameViewController: UIViewController {
     
+    //MARK: - IBOutlets
     @IBOutlet var lifeIcon: UIImageView!
     @IBOutlet var backgroundImage: UIImageView!
     @IBOutlet var backgroundImageMirrored: UIImageView!
@@ -19,6 +20,7 @@ final class GameViewController: UIViewController {
     @IBOutlet var buttonsBackground: UIView!
     @IBOutlet var gradientTintOverlay: UIView!
     
+    @IBOutlet var closeGameButton: UIButton!
     @IBOutlet var leftButton: UIButton!
     @IBOutlet var rightButton: UIButton!
     
@@ -26,28 +28,41 @@ final class GameViewController: UIViewController {
     
     @IBOutlet var scoreLabel: UILabel!
     @IBOutlet var lifeLeftLabel: UILabel!
+    @IBOutlet var gameOverLabel: UILabel!
     
+    //MARK: - Private properties
     private let storageManager = StorageManager.shared
-    private let moveStep: CGFloat = 100
+    private let moveStep = Game.playerMoveStep
     
-    private var obstaclesPassed = 0
     
-    private var gameSpeed = 2.0
-    private var playerLife = 3
+    private var obstaclesPassed: Int = .zero
+    
+    private var gameSpeed: Double {
+        guard let speed = currentPlayer?.speed else { return 3 }
+        return speed
+    }
+    
+    private var obstacleSkin: String {
+        guard let skin = currentPlayer?.obstacle else { return Skin.bolt.selection }
+        
+        return skin
+    }
+    
+    private var playerLife = Game.playerLifeCount
     
     private var spawnTimer: Timer?
     private var scoreTimer: Timer?
     private var spawnCoordinates: [CGFloat]?
     
-    var currentPlayer: User!
+    //MARK: - Other properties
+    var currentPlayer: User?
     
     override var prefersStatusBarHidden: Bool { true }
     
-    
+    //MARK: - View Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(currentPlayer)
+        loadPlayerSkin()
         
         setVisualSettings()
         gradientTintOverlay.setGradientBackground()
@@ -62,7 +77,7 @@ final class GameViewController: UIViewController {
         animateBackground()
         updateScore()
         
-        spawnTimer = Timer.scheduledTimer(timeInterval: gameSpeed / 3, target: self, selector: #selector(generateObstacles), userInfo: nil, repeats: true)
+        spawnTimer = Timer.scheduledTimer(timeInterval: gameSpeed / Constant.three, target: self, selector: #selector(generateObstacles), userInfo: nil, repeats: true)
         
         scoreTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateScore), userInfo: nil, repeats: true)
         
@@ -70,20 +85,20 @@ final class GameViewController: UIViewController {
     }
     
     
-    
+    //MARK: - IBActions
     @IBAction func exitButtonTapped(_ sender: Any) {
         dismiss(animated: true)
     }
     
     @IBAction func leftButtonPressed(_ sender: Any) {
-        if playerView.center.x - moveStep > view.bounds.minX + moveStep / 2 {
+        if playerView.center.x - moveStep > view.bounds.minX + moveStep / Constant.two {
             playerXposition.constant -= moveStep
             
             let animator = UIViewPropertyAnimator(duration: 0.1, curve: .linear)
             
             animator.addAnimations {
-                self.playerView.frame = self.playerView.frame.offsetBy(dx: -self.moveStep, dy: 0)
-                self.playerView.transform = CGAffineTransform(scaleX: 3, y: 0.1)
+                self.playerView.frame = self.playerView.frame.offsetBy(dx: -self.moveStep, dy: .zero)
+                self.playerView.transform = CGAffineTransform(scaleX: Constant.three, y: 0.1)
             }
             animator.addCompletion { _ in
                 self.animatePlayerIdle()
@@ -98,7 +113,7 @@ final class GameViewController: UIViewController {
             
             let animator = UIViewPropertyAnimator(duration: 0.1, curve: .linear)
             animator.addAnimations {
-                self.playerView.frame = self.playerView.frame.offsetBy(dx: self.moveStep, dy: 0)
+                self.playerView.frame = self.playerView.frame.offsetBy(dx: self.moveStep, dy: .zero)
                 self.playerView.transform = CGAffineTransform(scaleX: 3, y: 0.1)
             }
             animator.addCompletion { _ in
@@ -108,7 +123,7 @@ final class GameViewController: UIViewController {
         }
     }
     
-    
+    //MARK: - Flow
     private func setVisualSettings() {
         buttonsBackground.backgroundColor = .black
         buttonsBackground.layer.opacity = 0.4
@@ -125,19 +140,25 @@ final class GameViewController: UIViewController {
         scoreBackground.layer.borderWidth = buttonsBackground.layer.borderWidth
         scoreBackground.layer.borderColor = buttonsBackground.layer.borderColor
         
+        playerView.tintColor = .systemGreen
         playerView.layer.shadowOpacity = 1
-        playerView.layer.shadowColor = UIColor.systemYellow.cgColor
+        playerView.layer.shadowColor = playerView.tintColor.cgColor
         playerView.layer.shadowRadius = 25
-        
     }
+    
+    private func loadPlayerSkin() {
+        guard let playerSkin = currentPlayer?.skin else { return }
+        playerView.image = UIImage(systemName: playerSkin)
+    }
+    
     
     private func animateBackground() {
         UIView.animate(withDuration: gameSpeed,
-                       delay: 0,
+                       delay: .zero,
                        options: [.repeat, .curveLinear],
                        animations: {
-            self.backgroundImage.transform = CGAffineTransform(translationX: 0, y: self.view.bounds.maxY)
-            self.backgroundImageMirrored.transform = CGAffineTransform(translationX: 0, y: self.view.bounds.maxY)
+            self.backgroundImage.transform = CGAffineTransform(translationX: .zero, y: self.view.bounds.maxY)
+            self.backgroundImageMirrored.transform = CGAffineTransform(translationX: .zero, y: self.view.bounds.maxY)
         })
     }
     
@@ -148,21 +169,21 @@ final class GameViewController: UIViewController {
     }
     
     private func lifeLeftCount() {
-        if playerLife != 0 {
+        if playerLife != .zero {
             playerLife -= 1 }
     }
     
     private func updateLifeCounter() {
-        lifeLeftLabel.text = "\(playerLife)"
+        lifeLeftLabel.text = String(playerLife)
     }
     
     @objc private func updateScore() {
-        scoreLabel.text = "SCORE: \(obstaclesPassed)"
+        scoreLabel.text = "\(Constant.score) \(obstaclesPassed)"
     }
     
     private func animatePlayerIdle() {
         UIView.animate(withDuration: 0.3,
-                       delay: 0,
+                       delay: .zero,
                        options: [.repeat],
                        animations: {
             self.playerView.transform = CGAffineTransform(scaleX: 1.1, y: 0.9)
@@ -173,8 +194,7 @@ final class GameViewController: UIViewController {
     private func animatePlayerDeath() {
         
         UIView.animate(withDuration: 0.6,
-                       delay: 0,
-                       
+                       delay: .zero,
                        options: [.curveLinear],
                        animations: {
             self.playerView.transform = CGAffineTransform(scaleX: 15, y: 0.2)
@@ -182,7 +202,7 @@ final class GameViewController: UIViewController {
         }, completion: { _ in
             
             UIView.animate(withDuration: 0.8,
-                           delay: 0,
+                           delay: .zero,
                            options: [.curveLinear],
                            animations: {
                 self.playerView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
@@ -197,13 +217,13 @@ final class GameViewController: UIViewController {
         guard let spawnCoordinates else { return }
         guard let randomX = spawnCoordinates.randomElement() else { return }
         
-        let frameSide: CGFloat = 70
+        let frameSide: CGFloat = Game.obstacleFrameSide
         
         let obstacle = UIImageView(frame: CGRect(x: randomX - frameSide / 2,
                                                   y: view.bounds.minY,
                                                   width: frameSide,
                                                   height: frameSide))
-        obstacle.image = UIImage(systemName: "bolt.batteryblock.fill")
+        obstacle.image = UIImage(systemName: obstacleSkin)
         obstacle.tintColor = .systemYellow
         obstacle.layer.shadowOpacity = 1
         obstacle.layer.shadowColor = obstacle.tintColor.cgColor
@@ -217,7 +237,7 @@ final class GameViewController: UIViewController {
         
         
         UIView.animate(withDuration: 3,
-                       delay: 0,
+                       delay: .zero,
                        usingSpringWithDamping: 0.1,
                        initialSpringVelocity: 5.2,
                        options: [.repeat, .curveLinear],
@@ -232,12 +252,12 @@ final class GameViewController: UIViewController {
         
         startAnimator.addAnimations {
             
-            obstacle.frame = obstacle.frame.offsetBy(dx: 0, dy: self.playerView.center.y)
+            obstacle.frame = obstacle.frame.offsetBy(dx: .zero, dy: self.playerView.center.y)
             
         }
         
         endAnimator.addAnimations {
-            obstacle.frame = obstacle.frame.offsetBy(dx: 0, dy: self.view.bounds.maxY)
+            obstacle.frame = obstacle.frame.offsetBy(dx: .zero, dy: self.view.bounds.maxY)
         }
         
         endAnimator.addCompletion { _ in
@@ -248,7 +268,7 @@ final class GameViewController: UIViewController {
         }
         
         startAnimator.addCompletion { _ in
-            if obstacle.frame.intersects(self.playerView.frame) && self.playerLife != 0 {
+            if obstacle.frame.intersects(self.playerView.frame) && self.playerLife != .zero {
                 
                 if self.playerLife < 2 {
                     obstacle.removeFromSuperview()
@@ -259,16 +279,55 @@ final class GameViewController: UIViewController {
                     self.animatePlayerDeath()
                     self.backgroundImage.layer.removeAllAnimations()
                     self.backgroundImageMirrored.layer.removeAllAnimations()
-                    self.storageManager.update(self.currentPlayer, newScore: Int64(self.obstaclesPassed))
+                    
+                    guard let player = self.currentPlayer else { return }
+                    self.storageManager.update(player, newScore: Int64(self.obstaclesPassed))
+                    self.showGameOverState()
                 }
                 self.lifeLeftCount()
                 self.updateLifeCounter()
                 obstacle.removeFromSuperview()
-            } else if self.playerLife != 0 {
-                self.obstaclesPassed += 1 }
+            } else if self.playerLife != .zero {
+                self.configurateScoreMultiplayer() }
             
             endAnimator.startAnimation()
         }
         startAnimator.startAnimation()
     }
+    
+    
+    private func configurateScoreMultiplayer() {
+        switch currentPlayer?.speed {
+        case Mode.hard.speed:
+            obstaclesPassed += 2
+        case Mode.extreme.speed:
+            obstaclesPassed += 3
+        default:
+            obstaclesPassed += 1
+        }
+    }
+    
+    private func showGameOverState() {
+        UIView.animate(withDuration: 0.6,
+                       delay: .zero,
+                       options: [.curveLinear, .repeat, .autoreverse],
+                       animations: {
+            self.gameOverLabel.isHidden = false
+            self.gameOverLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1)
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.6,
+                       delay: .zero,
+                       options: [.curveLinear, .repeat, .autoreverse, .allowUserInteraction],
+                       animations: {
+            self.closeGameButton.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        }, completion: nil)
+        
+        
+    }
+                       
+    
+    
+    
+    
 }

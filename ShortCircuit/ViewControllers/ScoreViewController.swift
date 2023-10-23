@@ -9,21 +9,16 @@ import UIKit
 
 final class ScoreViewController: UIViewController {
     
-    
+    //MARK: - IBOutlets
     @IBOutlet var leaderboardLabel: UILabel!
-    
     @IBOutlet var exitButton: UIButton!
     @IBOutlet var scoreTableView: UITableView!
+    
+    //MARK: - Properties
     private let storageManager = StorageManager.shared
-    var playerList: [User]!
+    var playerList: [User]?
     
-    
-    
-    
-   
-    
-    
-
+    //MARK: - View Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +27,6 @@ final class ScoreViewController: UIViewController {
         
         scoreTableView.dataSource = self
         scoreTableView.delegate = self
-        
 
         loadDataBase()
     }
@@ -43,11 +37,12 @@ final class ScoreViewController: UIViewController {
         animateWithFlashEffect(for: leaderboardLabel)
     }
 
-    
+    //MARK: - IBActions
     @IBAction func backToMainMenuTapped(_ sender: Any) {
         dismiss(animated: true)
     }
     
+    //MARK: - Flow
     private func loadDataBase() {
         storageManager.read { users in
             switch users {
@@ -65,53 +60,29 @@ final class ScoreViewController: UIViewController {
         exitButton.layer.cornerRadius = 5
     }
     
-    func animateWithFlashEffect(for view: UIView) {
-        view.alpha = 0.3
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       usingSpringWithDamping: 0.1,
-                       initialSpringVelocity: 5.2,
-                       options: [.repeat, .autoreverse],
-                       animations: {
-            
-            view.transform = CGAffineTransform(scaleX: 1.01, y: 1)
-            
-            
-            view.alpha = 1
-        })
-    }
+    
     
 }
 
+//MARK: - UITableViewDelegate & UITableViewDataSource
 extension ScoreViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        playerList.count
+        guard let list = playerList else { return .zero }
+        return list.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "score", for: indexPath)
-        let sortedList = playerList.sorted(by: {
-            $0.score > $1.score
-        })
-        let player = sortedList[indexPath.row]
-        var content = cell.defaultContentConfiguration()
         
-        content.text = player.name
-        content.secondaryText = String(player.score)
-        content.image = UIImage(systemName: "person.fill")
-        content.imageProperties.tintColor = .systemGreen
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScoreTableViewCell.identifier, for: indexPath) as? ScoreTableViewCell else { return UITableViewCell() }
         
-        if let font = UIFont(name: "Copperplate", size: 20) {
-            content.textProperties.font = font
-            content.textProperties.color = .white
-            content.secondaryTextProperties = content.textProperties
-        }
+        guard let list = playerList else { return UITableViewCell() }
         
-        cell.contentConfiguration = content
+        let sortedList = list.sorted(by: { $0.score > $1.score })
+        
+        cell.configure(with: sortedList[indexPath.row].name, and: sortedList[indexPath.row].score)
         
         return cell
     }
 }
-

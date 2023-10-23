@@ -11,7 +11,6 @@ final class StorageManager {
     
     static let shared = StorageManager()
     
-    
     // MARK: - CoreData Stack
     private let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Player")
@@ -61,7 +60,7 @@ final class StorageManager {
         saveContext()
     }
     
-    func update(_ user: User, newMode: Int64) {
+    func update(_ user: User, newMode: Double) {
         user.speed = newMode
         saveContext()
     }
@@ -77,8 +76,10 @@ final class StorageManager {
     }
     
     func update(_ user: User, newScore: Int64) {
-        user.score = newScore
-        saveContext()
+        if user.score < newScore {
+            user.score = newScore
+            saveContext()
+        }
     }
     
     func delete(_ user: User) {
